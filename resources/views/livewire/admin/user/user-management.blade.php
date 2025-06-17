@@ -7,9 +7,14 @@
     <div class="flex justify-end mr-0 py-3">
         {{-- <a href="user-create" wire:navigate.hover class="text-indigo-500 hover:text-indigo-700">Create</a> --}}
         <flux:button
+            href="attribution-roles-permissions" icon-trailing="lock-closed" variant="primary" color="zinc"
+        >
+            Roles & Permissions
+        </flux:button>
+        <flux:button
             href="user-create" icon-trailing="plus" class="bg-blue-600! text-white! hover:bg-blue-700!"
         >
-            Create
+            Créer
         </flux:button>
     </div>
 

@@ -1,5 +1,5 @@
 <div>    
-    <flux:heading size="xl" level="1">{{ __('Incription Clients') }}</flux:heading>
+    <flux:heading size="xl" level="1">{{ __('Inscription Clients') }}</flux:heading>
     <flux:subheading size="lg" class="mb-6">{{ __('Gérer tous vos Clients') }}</flux:subheading>
     <flux:separator variant="subtle" class="mb-3" />
 

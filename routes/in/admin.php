@@ -4,7 +4,10 @@ use App\Livewire\Admin\Customer\CustomerActions;
 use App\Livewire\Admin\Customer\CustomerManager;
 use App\Livewire\Admin\Customer\CustomerShow;
 use App\Livewire\Admin\DashbRolesPerms;
+use App\Livewire\Admin\User\PermissionManagement;
+use App\Livewire\Admin\User\RoleManagement;
 use App\Livewire\Admin\User\UserManagement;
+use App\Livewire\Admin\User\UserRoleAssignment;
 use App\Livewire\Admin\WarehouseManager;
 use App\Livewire\Customer\CustomerDashboard;
 use App\Livewire\Settings\Appearance;
@@ -34,17 +37,20 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/users', UserManagement::class)->name('users');
     
-    Route::get('/roles', function () {
+    /* Route::get('/roles', function () {
         return view('roles');
-    })->name('roles');
+    })->name('roles'); */
+    Route::get('/roles', RoleManagement::class)->name('roles');
     
-    Route::get('/permissions', function () {
+    /* Route::get('/permissions', function () {
         return view('permissions');
-    })->name('permissions');
+    })->name('permissions'); */
+    Route::get('/permissions', PermissionManagement::class)->name('permissions');
     
-    Route::get('/user-roles', function () {
+    /* Route::get('/user-roles', function () {
         return view('user-roles');
-    })->name('user-roles');
+    })->name('user-roles'); */
+    Route::get('/user-roles', UserRoleAssignment::class)->name('user-roles');
 });
 
 

@@ -65,6 +65,11 @@ class User extends Authenticatable
             ->implode('');
     }
 
+    public function getFullName()
+    {
+        return "{$this->firstname} {$this->lastname}";
+    }
+
     /* if user is suspended - call it in user list */
     public function suspendUser()
     {

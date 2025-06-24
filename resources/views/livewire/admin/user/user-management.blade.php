@@ -12,7 +12,7 @@
             Roles & Permissions
         </flux:button>
         <flux:button
-            href="user-create" icon-trailing="plus" class="bg-blue-600! text-white! hover:bg-blue-700!"
+            href="{{ route('admin.users.create') }}" wire:navigate icon-trailing="plus" class="bg-blue-600! text-white! hover:bg-blue-700!"
         >
             Créer
         </flux:button>

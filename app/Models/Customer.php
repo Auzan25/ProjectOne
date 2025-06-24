@@ -27,8 +27,23 @@ class Customer extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function getFullName()
+    {
+        return "{$this->firstname} {$this->lastname}";
+    }
+
     public function scopeSearch($query, $value)
     {
-        $query->where('firstname', 'like', "%{$value}%")->orWhere('lastname', 'like', "{% $value %}");
+        $query->where('firstname', 'like', "%{$value}%")->orWhere('lastname', 'like', "%{$value}%");
     }
+
+    public function loyaltyCard()
+    {
+        return $this->hasOne(LoyaltyCard::class);
+    }
+    /* case many */
+    /* public function loyaltyCards()
+    {
+        return $this->hasMany(LoyaltyCard::class);
+    } */
 }

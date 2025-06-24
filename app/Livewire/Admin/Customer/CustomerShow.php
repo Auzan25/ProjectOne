@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Customer;
 
 use App\Models\Customer;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CustomerShow extends Component
@@ -45,8 +46,15 @@ class CustomerShow extends Component
     public $description = '';
     public $created_at, $updated_at;
     public $agentName;
+    public $balance;
 
     public function mount()
+    {
+        $this->getCustomerData();
+    }
+
+    #[On('reloadCardData')]
+    public function reloadCardData()
     {
         $this->getCustomerData();
     }
@@ -58,22 +66,25 @@ class CustomerShow extends Component
 
     public function getCustomerData()
     {
-        $customer = Customer::find($this->customer);
-        $this->customerId = $customer->id;
-        $this->civility = $customer->civility;
-        $this->lastname = $customer->lastname;
-        $this->firstname = $customer->firstname;
-        $this->birthplace = $customer->birthplace;
-        $this->birthdate = $customer->birthdate;
-        $this->address = $customer->address;
-        $this->city = $customer->city;
-        $this->email = $customer->email;
-        $this->mobile_phone = $customer->mobile_phone;
-        $this->fixed_phone = $customer->fixed_phone;
-        $this->magasin_reception = $customer->magasin_reception;
-        $this->description = $customer->description;
-        $this->created_at = $customer->created_at;
-        $this->updated_at = $customer->updated_at;
-        $this->agentName = $customer->agentName;
+        $customerData = Customer::with('loyaltyCard')->find($this->customer);
+        //dd($customerData);
+        $this->customerId = $customerData->id;
+        $this->civility = $customerData->civility;
+        $this->lastname = $customerData->lastname;
+        $this->firstname = $customerData->firstname;
+        $this->birthplace = $customerData->birthplace;
+        $this->birthdate = $customerData->birthdate;
+        $this->address = $customerData->address;
+        $this->city = $customerData->city;
+        $this->email = $customerData->email;
+        $this->mobile_phone = $customerData->mobile_phone;
+        $this->fixed_phone = $customerData->fixed_phone;
+        $this->magasin_reception = $customerData->magasin_reception;
+        $this->description = $customerData->description;
+        $this->created_at = $customerData->created_at;
+        $this->updated_at = $customerData->updated_at;
+        $this->agentName = $customerData->agentName;
+        /* card */
+        $this->balance = $customerData->loyaltyCard->balance;
     }
 }

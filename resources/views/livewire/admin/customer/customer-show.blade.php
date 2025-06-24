@@ -6,24 +6,35 @@
         </h1>
         
         <div class="flex items-center gap-3 bg-white rounded-lg shadow-sm p-3">
-            <button wire:click="$dispatch('openModal', { component: 'customer.balance-edit', arguments: { customer: {{ $customerId }} }})"
+            {{-- <button wire:click="$dispatch('openModal', { component: 'customer.balance-edit', arguments: { customer: {{ $customerId }} }})"
                 class="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
-            </button>
+            </button> --}}
+
+            <flux:modal.trigger name="edit-card">
+                <flux:button class="cursor-pointer p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full transition border-none focus:outline-none focus:ring-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                </flux:button>
+            </flux:modal.trigger>
+
+            {{-- move the modal, if u want, to this livewire component and call them --}}
+            @livewire('admin\customer\account-actions', ['customerId'=>$customerId])
             
             <div class="text-lg font-semibold px-2">
                 Solde: 
                 @if($balanceVisible)
                     {{-- <span class="text-green-600">{{ number_format($customer->balance, 0, ',', ' ') }} FCFA</span> --}}
-                    <span class="text-green-600">{{ number_format(580000, 0, ',', ' ') }} FCFA</span>
+                    <span class="text-green-600">{{ number_format($balance, 0, ',', ' ') }} FCFA</span>
                 @else
                     <span class="text-gray-400">•••••••</span>
                 @endif
             </div>
             
-            <button wire:click="toggleBalance" class="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-full transition">
+            <button wire:click="toggleBalance" class="cursor-pointer p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-full transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                 </svg>

@@ -92,12 +92,14 @@
 
             <!-- Téléphones -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div wire:ignore>
                     <label for="mobile_phone" class="block text-gray-700 mb-2">Numéro de téléphone mobile <span class="text-red-500">*</span></label>
-                    <input type="tel" wire:model="mobile_phone" id="mobile_phone" onchange="completePhoneNumber" 
+                    <input type="tel" wire:model="mobile_phone" id="mobile_phone"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <input type="tel" wire:model="full_mobile_phone" id="full_mobile_phone" 
-                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <span id="valid-msg" class="hidden text-green-700 text-sm">✓ Valide</span>
+                        <span id="error-msg" class="hidden text-red-500 text-sm"></span>
+                        <input type="hidden" wire:model="phone_full" name="phone_full" id="phone_full">
+                        <input type="hidden" name="country_code" wire:model="country_code">
                         @error('mobile_phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div>
@@ -108,7 +110,20 @@
             </div>
 
             <!-- Magasin de réception -->
-            <div>
+            <h4 class="hidden">{{ $selectedMagasin }}</h4>
+            <!-- Using Select2 -->
+            <div wire:ignore>
+                <label for="magasin_reception" class="block text-gray-700 mb-2">Magasin de réception</label>
+                <select id="select2-dropdown" 
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Sélectionnez un magasin</option>
+                    <option value="Auchan Yoff">Auchan Yoff</option>
+                    <option value="Auchan Mbour">Auchan Mbour</option>
+                    <option value="Auchan Keur Massar">Auchan Keur Massar</option>
+                    <option value="Auchan Mermoz">Auchan Mermoz</option>
+                </select>
+            </div>
+            {{-- <div>
                 <label for="magasin_reception" class="block text-gray-700 mb-2">Magasin de réception</label>
                 <select wire:model="magasin_reception" id="magasin_reception" 
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -118,7 +133,7 @@
                     <option value="Auchan Keur Massar">Auchan Keur Massar</option>
                     <option value="Auchan Mermoz">Auchan Mermoz</option>
                 </select>
-            </div>
+            </div> --}}
 
             <!-- Description -->
             <div>
@@ -220,4 +235,107 @@
             @endif
         </form>
     </div>
+
 </div>
+
+
+<!-- after stack script in layout - then push script -->
+@push('scripts')
+    <script>
+        const input = document.querySelector("#mobile_phone");
+        //const button = document.querySelector("#btn");
+        const errorMsg = document.querySelector("#error-msg");
+        const validMsg = document.querySelector("#valid-msg");
+
+        // here, the index maps to the error code returned from getValidationError - see readme
+        //const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        const errorMap = ["Numéro invalide", "Code pays invalide", "Trop court", "Trop long", "Numéro invalide"]; // fr
+
+        // initialise plugin
+        const iti = window.intlTelInput(input, {
+        initialCountry: "sn",
+        separateDialCode: true, // show country code
+        hiddenInput: (telInputName) => ({
+            phone: "phone_full",
+            country: "country_code",
+        }),
+        loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
+        });
+
+
+        input.addEventListener('countrychange', updateLivewire);
+        input.addEventListener('blur', updateLivewire);
+
+        function updateLivewire() {
+            if (iti.isValidNumber()) {
+                const fullNumber = iti.getNumber(); // récupère le numéro international complet
+                // Mettre à jour la propriété Livewire "full_phone"
+                @this.set('phone_full', fullNumber);
+            } else {
+                @this.set('phone_full', null);
+            }
+        }
+
+
+        const reset = () => {
+        input.classList.remove("error");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hidden");
+        validMsg.classList.add("hidden");
+        };
+
+        const showError = (msg) => {
+        input.classList.add("error");
+        errorMsg.innerHTML = msg;
+        errorMsg.classList.remove("hidden");
+        };
+
+        // on click button: validate
+        //button.addEventListener('click', () => {
+        //reset();
+        //if (!input.value.trim()) {
+        //    showError("Required");
+        //} else if (iti.isValidNumberPrecise()) {
+        //    validMsg.classList.remove("hidden");
+        //} else {
+        //    const errorCode = iti.getValidationError();
+        //    const msg = errorMap[errorCode] || "Invalid number";
+        //    showError(msg);
+        //}
+        //});
+
+        // on blur: validate
+        input.addEventListener('blur', () => {
+        reset();
+        if (input.value.trim()) {
+            //if (iti.isValidNumberPrecise()) {
+            if (iti.isValidNumber()) {
+                validMsg.classList.remove("hidden");
+                //console.log(input.value);
+            } else {
+                input.classList.add("error");
+                var errorCode = iti.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hidden");
+            }
+        }
+        });
+
+        // on keyup / change flag: reset
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
+
+        
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#select2-dropdown').select2();
+            $('#select2-dropdown').on('change', function(e) {
+                var data = $('#select2-dropdown').select2('val');
+                @this.set('selectedMagasin', data);
+            });
+        });
+    </script>
+@endpush

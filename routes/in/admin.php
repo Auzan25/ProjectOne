@@ -6,6 +6,7 @@ use App\Livewire\Admin\Customer\CustomerShow;
 use App\Livewire\Admin\DashbRolesPerms;
 use App\Livewire\Admin\User\PermissionManagement;
 use App\Livewire\Admin\User\RoleManagement;
+use App\Livewire\Admin\User\UserForm;
 use App\Livewire\Admin\User\UserManagement;
 use App\Livewire\Admin\User\UserRoleAssignment;
 use App\Livewire\Admin\WarehouseManager;
@@ -29,6 +30,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('client/{customer}', CustomerShow::class)->name('customer.show');
     Route::get('entrepots', WarehouseManager::class)->name('warehouses');
     Route::get('utilisateurs', UserManagement::class)->name('users');
+
+    Route::get('utilisateurs/creation', UserForm::class)->name('users.create');
+    Route::get('utilisateurs/edition/{user}', UserForm::class)->name('users.edit');
 });
 
 /* Roles - Permissions - Assign... */

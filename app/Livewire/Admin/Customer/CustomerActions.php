@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Customer;
 
 use App\Models\Customer;
 use App\Models\LoyaltyCard;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -18,11 +19,12 @@ class CustomerActions extends Component
     public $address = '';
     public $city = '';
     public $email = '';
-    public $countryCode = '+221';
-    public $full_mobile_phone = '';
+    public $country_code = '';
+    public $phone_full = '';
     public $mobile_phone = '';
     public $fixed_phone = '';
     public $magasin_reception = '';
+    public $selectedMagasin = '';
     public $description = '';
 
     // Informations carte de fidélité
@@ -45,17 +47,13 @@ class CustomerActions extends Component
     {
         return rand(10000000, 99999999);
     }
-
-    public function completePhoneNumber()
-    {
-        $this->full_mobile_phone = "221"+$this->mobile_phone;
-    }
     
     protected $rules = [
         'civility'          => 'required',
         'lastname'          => 'required|min:2',
         'firstname'         => 'required|min:2',
-        'mobile_phone'      => 'required|unique:customers,mobile_phone|digits:12',
+        //'mobile_phone'      => 'required|unique:customers,mobile_phone',
+        'phone_full'      => 'required|unique:customers,mobile_phone',
         'fixed_phone'      => 'nullable|unique:customers|digits:12',
         'address'           => 'required',
         'city'             => 'required',
@@ -70,23 +68,24 @@ class CustomerActions extends Component
 
     public function inscription()
     {
-        $this->validate();
         //dd($this->mobile_phone);
-        //$this->mobile_phone = $this->countryCode .''. $this->mobile_phone;
+        //dd($this->phone_full);
+        $this->validate();
 
         $customer = Customer::create([
             'civility'  =>  $this->civility,
             'lastname'  =>  $this->lastname,
             'firstname'  =>  $this->firstname,
-            //'mobile_phone'  =>  '+221'.''.$this->mobile_phone,
-            'mobile_phone'  =>  $this->mobile_phone,
+            //'mobile_phone'  =>  $this->mobile_phone,
+            'mobile_phone'  =>  $this->phone_full,
             'address'  =>  $this->address,
             'city'  =>  $this->city,
             'email'  =>  $this->email,
             'birthdate'  =>  $this->birthdate,
             'birthplace'  =>  $this->birthplace,
-            'fixed_phone'  =>  $this->fixed_phone,  // ? '+221'.''.$this->fixed_phone : '',
-            'magasin_reception'  =>  $this->magasin_reception,
+            'fixed_phone'  =>  $this->fixed_phone,
+            //'magasin_reception'  =>  $this->magasin_reception,
+            'magasin_reception'  =>  $this->selectedMagasin,
             'description'  =>  $this->description,
             'user_id'  =>  Auth::user()->id,
         ]);
@@ -98,12 +97,21 @@ class CustomerActions extends Component
         ]);
         
         session()->flash('message', 'Inscription réussie !');
+        $this->dispatch('loadCustomers');
 
         return $this->redirect('/admin/clients', navigate: true);
     }
 
     public function render()
     {
+        /* if($this->selectedMagasin) {
+        $m = Warehouse::where('id', '=', $this->selectedMagasin)->first();
+        $this->show_name = $m->name;
+        } else {
+        $this->selectedMagasin = null;
+        $this->show_name = null;
+        } */
         return view('livewire.admin.customer.customer-actions');
     }
+
 }

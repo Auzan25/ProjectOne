@@ -2,6 +2,10 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         @include('partials.head')
+        <!-- CSS alertifyjs -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
         {{-- <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900"> --}}
@@ -148,6 +152,20 @@
 
         {{ $slot }}
 
+        <!-- JavaScript Alertifyjs -->
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+        <script>
+            document.addEventListener('livewire:init', () => {
+                window.addEventListener('notify', event => {
+                    //console.log('Received notification event:', event.detail[0].text);
+                    alertify.set('notifier','position', event.detail[0].position || 'top-right');
+                    alertify.notify(event.detail[0].text, event.detail[0].type || 'success');
+                });
+            });
+        </script>
+
         @fluxScripts
+
+        @stack('scripts')
     </body>
 </html>

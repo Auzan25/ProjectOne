@@ -28,6 +28,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('clients', CustomerManager::class)->name('customers');
     Route::get('clients/inscription', CustomerActions::class)->name('customer-actions');
     Route::get('client/{customer}', CustomerShow::class)->name('customer.show');
+    Route::get('ventes', WarehouseManager::class)->name('ventes');
     Route::get('entrepots', WarehouseManager::class)->name('warehouses');
     Route::get('utilisateurs', UserManagement::class)->name('users');
 

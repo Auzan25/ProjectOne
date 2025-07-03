@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Livewire\Customer;
+namespace App\Livewire\Admin\Stats;
 
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class CustomerDashboard extends Component
+class CustomersChart extends Component
 {
+    public $headerColor = "bg-indigo-50 ";
+    public $cardTitle = "Chart - Graphique ";
     public $customerChartData;
 
     public function mount()
     {
-        /* SQLite doesn't have a DATE_FORMAT function - that's a MySQL function. */
-        //$customers = Customer::select(DB::raw("DATE_FORMAT('created_at', '%m-%Y') as month"), DB::raw("COUNT (*) as compteur"))
         $customers = Customer::select(DB::raw("created_at as month"), DB::raw("COUNT (*) as compteur"))
                         ->groupBy('month')
                         ->orderBy("month", "ASC")
@@ -32,6 +32,6 @@ class CustomerDashboard extends Component
 
     public function render()
     {
-        return view('livewire.customer.customer-dashboard');
+        return view('livewire.admin.stats.customers-chart');
     }
 }

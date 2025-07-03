@@ -13,6 +13,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+/* TEST */
+Route::get('/test', function () {
+    return view('wpage-test-login');
+})->name('home');
+
 /* Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard'); */

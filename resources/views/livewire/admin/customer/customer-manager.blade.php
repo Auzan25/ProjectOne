@@ -46,7 +46,8 @@
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        {{-- <thead class="text-xs text-gray-700 uppercase bg-gray-50"> --}}
+                        <thead class="text-xs text-white uppercase bg-gray-50" style="background-color: #545456;">
                             <tr>
                                 <th scope="col" class="px-4 py-3">Nom</th>
                                 <th scope="col" class="px-4 py-3">Prénom(s)</th>

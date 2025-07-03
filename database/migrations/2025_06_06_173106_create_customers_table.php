@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('civility');
             $table->string('firstname');
             $table->string('lastname');
+            $table->enum('sexe', ['masculin', 'feminin'])->nullable();
             $table->string('mobile_phone')->unique();
             $table->string('fixed_phone')->nullable();
             $table->string('email')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string('city')->nullable();    // ville
             $table->string('magasin_reception')->nullable();
             $table->text('description')->nullable();
+            $table->boolean('is_active')->nullable();
             $table->unsignedBigInteger('user_id');//->nullable();
             $table->timestamps();
         });

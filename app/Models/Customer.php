@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+    /* protected $table = "table_name";
+    protected $primaryKey = "id"; */
     protected $fillable = [
         'civility',     
         'lastname',

@@ -20,7 +20,7 @@ class CustomerActions extends Component
     public $city = '';
     public $email = '';
     public $country_code = '';
-    public $phone_full = '';
+    public $phone_full = '';    //  get full phone typed
     public $mobile_phone = '';
     public $fixed_phone = '';
     public $magasin_reception = '';
@@ -70,6 +70,13 @@ class CustomerActions extends Component
     {
         //dd($this->mobile_phone);
         //dd($this->phone_full);
+        if(empty($this->phone_full)) {
+            $this->dispatch('notify', [
+                'text' => 'Veuillez renseigner le numéro de téléphone ainsi que tous les champs obligatoires.',
+                'type' => 'error',
+                'status' => ''
+            ]);
+        }
         $this->validate();
 
         $customer = Customer::create([

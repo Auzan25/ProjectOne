@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('card_number')->unique();
             $table->string('barcode')->unique()->nullable();
             $table->string('balance')->default(0);  // solde
-            $table->unsignedBigInteger('customer_id');//->nullable();
+            $table->unsignedBigInteger('customer_id');
+            $table->boolean('is_active')->nullable();
             $table->timestamps();
         });
     }

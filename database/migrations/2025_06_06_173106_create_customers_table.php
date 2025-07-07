@@ -13,20 +13,23 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('civility');
+            $table->string('civility'); // Monsieur ou Madame
             $table->string('firstname');
             $table->string('lastname');
+            $table->string('pseudo')->nullable();
             $table->enum('sexe', ['masculin', 'feminin'])->nullable();
             $table->string('mobile_phone')->unique();
             $table->string('fixed_phone')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->unique()->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
             $table->date('birthdate')->nullable();
             $table->string('birthplace')->nullable();
             $table->text('address')->nullable();
             $table->string('city')->nullable();    // ville
             $table->string('magasin_reception')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('is_active')->nullable();
+            $table->boolean('is_active')->default(false);
             $table->unsignedBigInteger('user_id');//->nullable();
             $table->timestamps();
         });
